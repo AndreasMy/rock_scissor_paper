@@ -1,3 +1,17 @@
+//! Buttons
+const rockBtn = document.querySelector("#rockBtn");
+const paperBtn = document.querySelector("#paperBtn");
+const scissorBtn = document.querySelector("#scissorBtn");
+
+//! Game Stats
+const displayPlayerSelection = document.querySelector("#playerSelection");
+const displayComputerSelection = document.querySelector("#computerSelection");
+const displayRound = document.querySelector("#roundResult");
+const displayPlayerScore = document.querySelector("#playerScore");
+const displayComputerScore = document.querySelector("#computerScore");
+const declareWinner = document.querySelector("#declareWinner");
+
+//! Round statements
 const playerPointPvS = "Player wins this round. Paper beats rock.";
 const playerPointSvP = "Player wins this round. Scissor beats paper.";
 const playerPointRvS = "Player wins this round. Rock beats scissor";
@@ -6,92 +20,118 @@ const computerPointPvR = "Computer wins this round. Paper beats Rock.";
 const computerPointSvP = "Computer wins this round. Scissor beats paper.";
 const draw = "Draw. Nobody wins this round";
 
-function playRound() {
-  let playerSelection = prompt("r/p/s?", "rock").toLowerCase();
-  let gameArray = ["rock", "scissor", "paper"];
-  let computerSelection = gameArray[Math.floor(Math.random() * gameArray.length)];
+//! Buttons
+rockBtn.addEventListener("click", function () {
+  game();
+});
 
-  console.log(`Computer selected ${computerSelection}`);
-  console.log(`Player selected ${playerSelection}`);
+paperBtn.addEventListener("click", function () {
+  game();
+});
 
-  if (computerSelection === "rock" && playerSelection === "paper") {
-    return playerPointPvS;
-  } else if (computerSelection === "rock" && playerSelection === "scissor") {
-    return computerPointRvS;
-  } else if (computerSelection === "paper" && playerSelection === "scissor") {
-    return playerPointSvP;
-  } else if (computerSelection === "paper" && playerSelection === "rock") {
+scissorBtn.addEventListener("click", function () {
+  game();
+});
+
+let computerScore = 0;
+let playerScore = 0;
+
+let playerSelection;
+const gameArray = ["rock", "scissor", "paper"];
+
+//! Functions
+function computerChoice() {
+  const computerSelection =
+    gameArray[Math.floor(Math.random() * gameArray.length)];
+  return computerSelection;
+}
+
+function playRock() {
+  const computerSelection = computerChoice();
+  playerSelection = "rock";
+  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
+  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
+
+  if (computerSelection == "paper") {
+    displayRound.innerHTML = `${computerPointPvR}`;
     return computerPointPvR;
-  } else if (computerSelection === "scissor" && playerSelection === "rock") {
+  } else if (computerSelection == "scissor") {
+    displayRound.innerHTML = `${playerPointRvS}`;
     return playerPointRvS;
-  } else if (computerSelection === "scissor" && playerSelection === "paper") {
-    return computerPointSvP;
-  } else if (
-    (computerSelection === "rock" && playerSelection === "rock") ||
-    (computerSelection === "paper" && playerSelection === "paper") ||
-    (computerSelection === "scissor" && playerSelection === "scissor")
-  ) {
+  } else {
+    displayRound.innerHTML = `${draw}`;
+    return draw;
+  }
+}
+
+function playPaper() {
+  const computerSelection = computerChoice();
+  playerSelection = "paper";
+  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
+  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
+
+  if (computerSelection == "rock") {
+    displayRound.innerHTML = `${playerPointPvS}`;
+    return playerPointPvS;
+  } else if (computerSelection == "scissor") {
+    displayRound.innerHTML = `${computerPointSvP}`;
+    return computerPointRvS;
+  } else {
+    displayRound.innerHTML = `${draw}`;
+    return draw;
+  }
+}
+
+function playScissor() {
+  const computerSelection = computerChoice();
+  playerSelection = "scissor";
+  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
+  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
+
+  if (computerSelection == "paper") {
+    displayRound.innerHTML = `${playerPointSvP}`;
+    return playerPointSvP;
+  } else if (computerSelection == "rock") {
+    displayRound.innerHTML = `${computerPointRvS}`;
+    return computerPointRvS;
+  } else {
+    displayRound.innerHTML = `${draw}`;
     return draw;
   }
 }
 
 function game() {
-  let computerScore = 0;
-  let playerScore = 0;
+  const rock = playRock();
+  const paper = playPaper();
+  const scissor = playScissor();
 
-  for (i = 0; i < 5; i++) {
-    let result = playRound();
-    // I variable result equals the return value of playRound()
-    if (result === playerPointPvS) {
-      playerScore++;
-      console.log(`${playerPointPvS}`);
-    } else if (result === playerPointRvS) {
-      playerScore++;
-      console.log(`Computer score: ${computerScore}`);
-      console.log(`Player score: ${playerScore}`);
-      console.log(`${playerPointRvS}`);
-    } else if (result === playerPointSvP) {
-      playerScore++;
-      console.log(`Computer score: ${computerScore}`);
-      console.log(`Player score: ${playerScore}`);
-      console.log(`${playerPointSvP}`);
-    } else if (result === computerPointRvS) {
-      computerScore++;
-      console.log(`Computer score: ${computerScore}`);
-      console.log(`Player score: ${playerScore}`);
-      console.log(`${computerPointRvS}`);
-    } else if (result === computerPointPvR) {
-      computerScore++;
-      console.log(`Computer score: ${computerScore}`);
-      console.log(`Player score: ${playerScore}`);
-      console.log(`${computerPointPvR}`);
-    } else if (result === computerPointSvP) {
-      computerScore++;
-      console.log(`Computer score: ${computerScore}`);
-      console.log(`Player score: ${playerScore}`);
-      console.log(`${computerPointSvP}`);
-    } else {
-      console.log(`${draw}`);
-      console.log(`Computer score: ${computerScore}`);
-      console.log(`Player score: ${playerScore}`);
-    }
+  if (rock === playerPointRvS) {
+    playerScore++;
+  } else if (rock === computerPointPvR) {
+    computerScore++;
+  } else if (paper === playerPointPvS) {
+    playerScore++;
+  } else if (paper === computerPointSvP) {
+    computerScore++;
+  } else if (scissor === playerPointSvP) {
+    playerScore++;
+  } else if (scissor === computerPointRvS) {
+    computerScore++;
+  } else {
   }
-  
-  //! change so that the first to reach 5 points wins
-  if (computerScore === playerScore) {
-    console.log("It's a tie.");
-  } else if (computerScore < playerScore) {
-    console.log(`${computerScore} - ${playerScore}: Player wins the game!`);
-  } else if (computerScore > playerScore) {
-    console.log(`${computerScore} - ${playerScore}: Computer wins the game!`);
+
+  displayPlayerScore.innerHTML = `Player score: ${playerScore}`;
+  displayComputerScore.innerHTML = `Computer Score: ${computerScore}`;
+
+  if (playerScore === 5 || computerScore === 5) {
+    rockBtn.disabled = true;
+    paperBtn.disabled = true;
+    scissorBtn.disabled = true;
+  }
+
+  if (playerScore === 5) {
+    declareWinner.innerHTML = `Player wins ${playerScore} - ${computerScore}`;
+  } else if (computerScore === 5) {
+    declareWinner.innerHTML = `computer wins ${playerScore} - ${computerScore}`;
   }
 }
-
-game();
-
-//! Notes for browser implementation
-// Buttons have hover effets
-// Buttons show computer choice
-// Color coded win/lose
-// Popup prompt to reset game
-// Bonus: delayed display of computer choice
