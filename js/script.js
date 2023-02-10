@@ -2,6 +2,9 @@
 const rockBtn = document.querySelector("#rockBtn");
 const paperBtn = document.querySelector("#paperBtn");
 const scissorBtn = document.querySelector("#scissorBtn");
+rockBtn.addEventListener("click", playRock);
+paperBtn.addEventListener("click", playPaper);
+scissorBtn.addEventListener("click", playScissor);
 
 //! Game Stats
 const displayPlayerSelection = document.querySelector("#playerSelection");
@@ -20,22 +23,8 @@ const computerPointPvR = "Computer wins this round. Paper beats Rock.";
 const computerPointSvP = "Computer wins this round. Scissor beats paper.";
 const draw = "Draw. Nobody wins this round";
 
-//! Buttons
-rockBtn.addEventListener("click", function () {
-  game();
-});
-
-paperBtn.addEventListener("click", function () {
-  game();
-});
-
-scissorBtn.addEventListener("click", function () {
-  game();
-});
-
 let computerScore = 0;
 let playerScore = 0;
-
 let playerSelection;
 const gameArray = ["rock", "scissor", "paper"];
 
@@ -49,80 +38,67 @@ function computerChoice() {
 function playRock() {
   const computerSelection = computerChoice();
   playerSelection = "rock";
-  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
-  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
-
+  
   if (computerSelection == "paper") {
     displayRound.innerHTML = `${computerPointPvR}`;
-    return computerPointPvR;
+    computerScore++;
   } else if (computerSelection == "scissor") {
     displayRound.innerHTML = `${playerPointRvS}`;
-    return playerPointRvS;
+    playerScore++;
   } else {
     displayRound.innerHTML = `${draw}`;
-    return draw;
   }
+  
+  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
+  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
+  displayPlayerScore.innerHTML = `Player score: ${playerScore}`;
+  displayComputerScore.innerHTML = `Computer Score: ${computerScore}`;
+  game() 
 }
 
 function playPaper() {
   const computerSelection = computerChoice();
   playerSelection = "paper";
-  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
-  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
-
+  
   if (computerSelection == "rock") {
     displayRound.innerHTML = `${playerPointPvS}`;
-    return playerPointPvS;
+    playerScore++;
   } else if (computerSelection == "scissor") {
     displayRound.innerHTML = `${computerPointSvP}`;
-    return computerPointRvS;
+    computerScore++;
   } else {
     displayRound.innerHTML = `${draw}`;
-    return draw;
   }
+
+  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
+  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
+  displayPlayerScore.innerHTML = `Player score: ${playerScore}`;
+  displayComputerScore.innerHTML = `Computer Score: ${computerScore}`;
+  game() 
 }
 
 function playScissor() {
   const computerSelection = computerChoice();
   playerSelection = "scissor";
-  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
-  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
-
+  
   if (computerSelection == "paper") {
     displayRound.innerHTML = `${playerPointSvP}`;
-    return playerPointSvP;
+    playerScore++;
   } else if (computerSelection == "rock") {
     displayRound.innerHTML = `${computerPointRvS}`;
-    return computerPointRvS;
+    computerScore++;
   } else {
     displayRound.innerHTML = `${draw}`;
-    return draw;
   }
+  
+  displayPlayerSelection.innerHTML = `Player played ${playerSelection}`;
+  displayComputerSelection.innerHTML = `computer played ${computerSelection}`;
+  displayPlayerScore.innerHTML = `Player score: ${playerScore}`;
+  displayComputerScore.innerHTML = `Computer Score: ${computerScore}`;
+  game() 
 }
 
 function game() {
-  const rock = playRock();
-  const paper = playPaper();
-  const scissor = playScissor();
-
-  if (rock === playerPointRvS) {
-    playerScore++;
-  } else if (rock === computerPointPvR) {
-    computerScore++;
-  } else if (paper === playerPointPvS) {
-    playerScore++;
-  } else if (paper === computerPointSvP) {
-    computerScore++;
-  } else if (scissor === playerPointSvP) {
-    playerScore++;
-  } else if (scissor === computerPointRvS) {
-    computerScore++;
-  } else {
-  }
-
-  displayPlayerScore.innerHTML = `Player score: ${playerScore}`;
-  displayComputerScore.innerHTML = `Computer Score: ${computerScore}`;
-
   if (playerScore === 5 || computerScore === 5) {
     rockBtn.disabled = true;
     paperBtn.disabled = true;
